@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 from urllib.parse import quote_plus
 from urllib.error import URLError
-# from urllib.request import Request, urlopen
 from selenium import webdriver
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.firefox import GeckoDriverManager
@@ -15,12 +14,6 @@ import logging
 
 def fetch(link: str) -> tuple[bool, any]:
     try:
-        # page = urlopen(
-        #     Request(
-        #         link, 
-        #         headers={'User-Agent': 'Mozilla/5.0'}
-        #     )
-        # ).read().decode('utf-8')
         options = webdriver.FirefoxOptions()
         options.add_argument('--headless')
         # executable_path param is not needed if you updated PATH
