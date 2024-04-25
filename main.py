@@ -6,6 +6,7 @@ from datetime import datetime
 from time import sleep
 from sys import exit
 from argparse import ArgumentParser
+from pathlib import Path
 
 from utilities.scrapper import scrape_chapter_list, scrape_chapter
 from utilities.volumizer import compile_volumes, volumizer_filter
@@ -17,7 +18,15 @@ def multi_run(operation, links):
     with Pool(processes=12) as pool:
         return pool.map(operation, links)
 
-def download_chapter(link: str) -> None:
+
+def initialize_novel(novel_path: str) -> None:
+    # Creating novel paths
+    Path(novel_path).mkdir(parents=True, exist_ok=True)
+    Path(f"{novel_path}/chapters").mkdir(parents=True, exist_ok=True)
+    Path(f"{novel_path}/volumes").mkdir(parents=True, exist_ok=True)
+
+
+def download_chapter(novel: str, link: str) -> None:
     filename, content = scrape_chapter(link)
 
     if filename is None or content is None:
@@ -26,7 +35,7 @@ def download_chapter(link: str) -> None:
 
     info(f"[{datetime.now()}] Downloading chapter: {filename}")
 
-    with open(f"chapters/{filename}.md", "w") as w:
+    with open(f"./novels/{novel}/chapters/{filename}.md", "w") as w:
         w.write(content)
 
 
@@ -38,13 +47,20 @@ def fetch_config(novel: str) -> None:
 def main(novel: str, volumize: str | None, start: int, end: int) -> None:
     config = fetch_config(novel)
 
+    # Setting novel base path
+    novel_path = f"./novels/{novel}"
+
+    # Checking if novel path exits
+    if not Path(novel_path).exists():
+        initialize_novel(novel_path)
+
     # Crawling chapter links
     chapter_list_template = f"{config['link']}/chapters?page=%d"
-    chapters_links = list(chain.from_iterable(multi_run(scrape_chapter_list, [chapter_list_template % (page_no + 1) for page_no in range(start, end + 1)])))
+    chapters_links = list(chain.from_iterable(multi_run(scrape_chapter_list, [chapter_list_template % (page_no) for page_no in range(start, end + 1)])))
 
     for i in tqdm(range(len(chapters_links)), desc="Downloading Chapters...", ascii=False, ncols=100):
-        download_chapter(chapters_links[i])
-        sleep(0.5)
+        download_chapter(novel, chapters_links[i])
+        sleep(1)
     
     if volumize is not None:
         if "volumes" not in config:
@@ -54,8 +70,7 @@ def main(novel: str, volumize: str | None, start: int, end: int) -> None:
         filter = volumizer_filter(volumize)
         volumizable_list = [volume for i, volume in enumerate(config["volumes"].items()) if filter(i + 1)]
         
-        novel_base = f"novels/{novel}/"
-        compile_volumes(f"{novel_base}/volumes", f"{novel_base}/chapters", volumizable_list)
+        compile_volumes(f"{novel_path}/volumes", f"{novel_path}/chapters", volumizable_list)
 
 
 if __name__ == "__main__":

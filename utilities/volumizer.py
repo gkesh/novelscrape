@@ -12,7 +12,7 @@ def volumizer_filter(condition: str) -> callable:
 def compile_volumes(volume_dir: str, chapter_dir: str, volumes: list) -> None:
     chapters = os.listdir(chapter_dir)
 
-    for volume_name, volume_range in volumes.items():
+    for volume_name, volume_range in volumes:
         volume_file = volume_name.replace(":", "").replace(" ", "_").lower()
 
         chapters_start, chapters_end = volume_range
