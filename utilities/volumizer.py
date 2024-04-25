@@ -20,7 +20,7 @@ def compile_volumes(volume_dir: str, chapter_dir: str, volumes: list) -> None:
 
         volume_content = f"<h1 style='page-break-after: always; text-align: center;'>{volume_name}</h1>"
 
-        with open(f"{volume_dir}/{volume_file}.md", "w") as vw:
+        with open(f"{volume_dir}/{volume_file}.html", "w") as vw:
             print(f"Writing volume: {volume_name}")
 
             for i in tqdm(range(len(chapters_in_volume)), desc="Compiling volume", ascii=False, ncols=100):
