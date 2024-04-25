@@ -35,12 +35,12 @@ def fetch_config(novel: str) -> None:
         return json.load(config)[novel]
 
 
-def main(novel: str, volumize: str | None) -> None:
+def main(novel: str, volumize: str | None, start: int, end: int) -> None:
     config = fetch_config(novel)
 
     # Crawling chapter links
     chapter_list_template = f"{config['link']}/chapters?page=%d"
-    chapters_links = list(chain.from_iterable(multi_run(scrape_chapter_list, [chapter_list_template % (page_no + 1) for page_no in range(14, 16)])))
+    chapters_links = list(chain.from_iterable(multi_run(scrape_chapter_list, [chapter_list_template % (page_no + 1) for page_no in range(start, end + 1)])))
 
     for i in tqdm(range(len(chapters_links)), desc="Downloading Chapters...", ascii=False, ncols=100):
         download_chapter(chapters_links[i])
@@ -63,6 +63,8 @@ if __name__ == "__main__":
 
     parser.add_argument("-n", "--novel", type=str, required=True)
     parser.add_argument("-v", "--volumize", type=str, required=False)
+    parser.add_argument("-s", "--pstart", type=int, required=True)
+    parser.add_argument("-e", "--pend", type=int, required=True)
 
     args = parser.parse_args()
 
@@ -70,4 +72,4 @@ if __name__ == "__main__":
         error("Invalid value for volumize option, please enter comma seperated numbers without spaces!")
         exit(1)
 
-    main(args.novel, args.volumize)
+    main(args.novel, args.volumize, args.pstart, args.pend)

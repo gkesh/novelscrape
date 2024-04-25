@@ -2,3 +2,4 @@ temp
 novels/
 novelscrape/
 **/__pycache__/
+config.json

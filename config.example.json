@@ -1,0 +1,10 @@
+{
+    "novel_name": {
+        "link": "https://www.linktonovel.com/novel-page",
+        "volumes": {
+            "Volume 1: Volume Name": [0, 95],
+            "Volume 2: Volume Name 2": [95, 350],
+            "Volume 7: Last Volume (Unended)": [350, -1]
+        }
+    }
+}
