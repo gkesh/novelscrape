@@ -2,11 +2,11 @@
 
 A educational scraping implementation to pull online paragraph based text content, organize based on user configuration and generated PDF to easy reading.
 
--- Major tools
+### Major tools
 - Beautiful Soup
 - Selenium
 
--- Major commands
+### Major commands
 
 ```bash
 # Download Chapters
