@@ -30,5 +30,5 @@ def compile_volumes(volume_dir: str, chapter_dir: str, volumes: list) -> None:
                     volume_content = f"{volume_content}{chapter_content}"
             
             info("Volumes Compiled Successfully!")
-
+            volume_content = f"<body style='font-size: 1.8em;'>{volume_content}</body>"
             vw.write(volume_content)

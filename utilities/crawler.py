@@ -8,4 +8,4 @@ def crawl_chapter(soup) -> str:
     
     file_title = chapter_title.replace(":", "").replace(" ", "_").replace("/", "_of_").lower()
 
-    return file_title, f"<h3>{chapter_title}</h3><br>{chapter_content}"
+    return file_title, f"<h3  style='page-break-before: always;'>{chapter_title}</h3>{chapter_content}"
