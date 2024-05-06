@@ -16,6 +16,7 @@ import json
 import re
 import os
 
+
 def multi_run(operation, links):
     with Pool(processes=12) as pool:
         return pool.map(operation, links)
@@ -46,7 +47,15 @@ def fetch_config(novel: str) -> None:
         return json.load(config)[novel]
 
 
-def main(novel: str, download: bool | None, volumize: str | None, start: int | None, end: int | None, pdfiy: bool | None) -> None:
+def main(
+        novel: str, 
+        download: bool | None, 
+        volumize: str | None, 
+        start: int | None, 
+        end: int | None, 
+        pdfiy: bool | None
+    ) -> None:
+    
     config = fetch_config(novel)
 
     # Setting novel base path
