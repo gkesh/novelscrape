@@ -95,7 +95,7 @@ if __name__ == "__main__":
         error("In download mode, please provide pstart and pend arguments as well!")
         exit(1)
 
-    if args.volumize is not None and re.match("^[0-9]+(,[0-9]+)*$", args.volumize) is None:
+    if args.volumize is not None and (args.volumize != "all" and re.match("^[0-9]+(,[0-9]+)*$", args.volumize) is None):
         error("Invalid value for volumize option, please enter comma seperated numbers without spaces!")
         exit(1)
 

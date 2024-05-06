@@ -6,11 +6,11 @@ from selenium.webdriver.common.print_page_options import PrintOptions
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from webdriver_manager.firefox import GeckoDriverManager
 from base64 import b64decode
-from os import path as opath, listdir
+from os import path as opath, listdir, mkdir
 
 
 def pdfier(novel: str, source: str, pdfiy: str) -> None:
-    outdir = f"/home/gkesh/Downloads/Novels/{novel}/"
+    outdir = f"/home/gkesh/Downloads/Novels/{novel}"
     volumes_path = f"{source}/volumes/"
 
     if pdfiy == "all":
@@ -29,6 +29,9 @@ def pdf_print(outdir: str, filename: str, path: str) -> bool:
     if not opath.exists(path):
         error(f"PDF print error. Path does not exist: {path}")
         return False 
+
+    if not opath.exists(outdir):
+        mkdir(outdir)
 
     try:
         options = webdriver.FirefoxOptions()
