@@ -5,7 +5,7 @@ from logging import info, error
 from datetime import datetime
 from time import sleep
 from sys import exit
-from argparse import ArgumentParser
+from argparse import ArgumentParser, BooleanOptionalAction
 from pathlib import Path
 
 from utilities.scrapper import scrape_chapter_list, scrape_chapter
@@ -84,7 +84,7 @@ if __name__ == "__main__":
 
     parser.add_argument("-n", "--novel", type=str, required=True)
     parser.add_argument("-v", "--volumize", type=str, required=False)
-    parser.add_argument("-d", "--download", type=bool, required=False)
+    parser.add_argument("-d", "--download", action=BooleanOptionalAction)
     parser.add_argument("-s", "--pstart", type=int, required=False)
     parser.add_argument("-e", "--pend", type=int, required=False)
     parser.add_argument("-p", "--pdfiy", type=str, required=False)
@@ -95,7 +95,7 @@ if __name__ == "__main__":
         error("In download mode, please provide pstart and pend arguments as well!")
         exit(1)
 
-    if args.volumize is not None and re.match("^[0-9]+(,[0-9]+)*$", args.volumize) is not None:
+    if args.volumize is not None and re.match("^[0-9]+(,[0-9]+)*$", args.volumize) is None:
         error("Invalid value for volumize option, please enter comma seperated numbers without spaces!")
         exit(1)
 
